@@ -3,8 +3,6 @@ import { useForm } from "react-hook-form";
 import "./../styles/Auth.css"; 
 
 function Header() {
-  
-
   return (
     <div>
       <div className="header">
@@ -21,3 +19,4 @@ function Header() {
     </div>
   );
 }
+export default Header;

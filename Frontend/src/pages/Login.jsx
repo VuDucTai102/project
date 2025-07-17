@@ -1,10 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import Header from "../components/Header";
-
 import "../styles/Auth.css";
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+
+  const navigate = useNavigate();
+  const onLoginSuccess = () => {
+    // Điều hướng đến trang chính sau khi đăng nhập thành công
+    navigate("/update-product");
+  };
+
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {

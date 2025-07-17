@@ -1,53 +1,88 @@
 import React, { useState } from "react";
-import Header from "./components/Header";
+import ModalProductDetail from "./components/ModalProductDetail";
 import Navbar from "./components/Navbar";
-import Banner from "./components/Banner";
 import ProductList from "./components/ProductList";
+import Header from "./components/Header";
+import Banner from "./components/Banner";
 import Footer from "./components/Footer";
-import ImageSearch from "./components/ImageSearch"; 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import "./index.css";
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 function App() {
-  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const handleOpenModal = (product) => {
+    setSelectedProduct(product);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleAddToCart = (product) => {
+    console.log("🛒 Đã thêm:", product);
+    setCartItems([...cartItems, product]);
+    setShowModal(false);
+  };
+
+  const handleBuy = () => {
+    alert("Mua ngay: " + selectedProduct.name);
+    setShowModal(false);
+  };
+
+  const handleCartClick = () => {
+    setIsCartOpen(true);
+  };
+
+  const handleCloseCart = () => {
+    setIsCartOpen(false);
+  };
 
   return (
-    <Router>
-      <div>
-        <Routes>
-          {/* Trang đăng nhập */}
-          <Route path="/login" element={<Login />} />
+    <div>
+      <Header />
+      <Navbar cartItems={cartItems} onCartClick={handleCartClick} />
+      <Banner />
 
-          {/* Trang đăng ký */}
-          <Route path="/register" element={<Register />} />
-
-          {/* Trang chính */}
-          <Route
-            path="/"
-            element={
-              <>
-                <Header />
-                <Navbar />
-                <Banner />
-
-                {/* Tìm kiếm bằng hình ảnh */}
-                <div className="container" style={{ padding: "20px" }}>
-                  <h2 style={{ marginBottom: "10px" }}>
-                    Tìm kiếm sản phẩm bằng hình ảnh
-                  </h2>
-                  <ImageSearch onSearchResult={setProducts} />
-                  <ProductList products={products} />
-                </div>
-
-                <Footer />
-              </>
-            }
-          />
-        </Routes>
+      {/* Danh sách sản phẩm */}
+      <div className="container" style={{ padding: "20px" }}>
+        <h2>Danh sách sản phẩm</h2>
+        <ProductList onViewDetail={handleOpenModal} />
       </div>
-    </Router>
+
+      <Footer />
+
+      {/* Modal chi tiết sản phẩm */}
+      <ModalProductDetail
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        product={selectedProduct}
+        onAddToCart={handleAddToCart} // Không được gọi sẵn ở đây!
+        onBuy={handleBuy}
+      />
+
+      {/* Modal giỏ hàng */}
+      <Modal isOpen={isCartOpen} onRequestClose={handleCloseCart} contentLabel="Giỏ hàng">
+        <h2>🛒 Giỏ hàng của bạn</h2>
+        {cartItems.length === 0 ? (
+          <p>Giỏ hàng trống.</p>
+        ) : (
+          <ul>
+            {cartItems.map((item, index) => (
+              <li key={index}>
+                {item.name} - {item.price}₫
+              </li>
+            ))}
+          </ul>
+        )}
+        <button onClick={handleCloseCart}>Đóng</button>
+      </Modal>
+    </div>
   );
 }
 
