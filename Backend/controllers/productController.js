@@ -36,12 +36,9 @@ exports.searchProducts = async (req, res) => {
     return res.status(400).json({ error: "Thiếu tham số tìm kiếm" });
   }
   try {
-    // Tìm theo tên hoặc keywords (giả sử keywords là mảng text trong DB)
     const result = await pool.query(
-      `SELECT * FROM products WHERE LOWER(name) LIKE $1 OR EXISTS (
-        SELECT 1 FROM unnest(keywords) AS kw WHERE LOWER(kw) LIKE $1
-      )`,
-      ["%" + q.toLowerCase() + "%"]
+      "SELECT * FROM products WHERE name ILIKE $1",
+      [`%${q}%`]
     );
     res.json(result.rows);
   } catch (err) {
@@ -49,3 +46,4 @@ exports.searchProducts = async (req, res) => {
     res.status(500).json({ error: "Lỗi server khi tìm kiếm sản phẩm" });
   }
 };
+
