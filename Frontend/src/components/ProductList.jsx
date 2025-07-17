@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ProductList.css";
-
+import axios from "axios";
 // Danh sách mặc định (hiện tại)
 const defaultProducts = [
   { id: 1, name: "Hồ sơ", price: "100,000đ", image: "/image/baothuA4.jpg" },
@@ -12,7 +12,8 @@ const defaultProducts = [
   { id: 7, name: "Giấy Kraft", price: "80,000đ", image: "/image/giaykraft.jpg" },
 ];
 
-function ProductList({ products = [] }) {
+function ProductList() {
+  const [products, setProducts] = useState([]);
   // State cho tìm kiếm
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -38,6 +39,12 @@ function ProductList({ products = [] }) {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    // Gọi API lấy sản phẩm
+    axios.get("http://localhost:5000/api/products")
+      .then(res => setProducts(res.data))
+      .catch(err => console.error(err));
+  }, []);
 
   return (
     <div className="product-section">
@@ -55,11 +62,11 @@ function ProductList({ products = [] }) {
       {error && <div style={{ color: 'red' }}>{error}</div>}
       <h2>{searchResults.length > 0 ? "Kết quả tìm kiếm" : "Sản phẩm nổi bật"}</h2>
       <div className="product-grid">
-        {displayProducts.map((p, index) => (
-          <div key={index} className="product-card">
-            <img src={p.image} alt={p.name} />
-            <h3>{p.name}</h3>
-            <p>{p.price}</p>
+        {displayProducts.map((product, index) => (
+          <div key={product.id || index} className="product-card">
+            <img src={product.image} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.price}</p>
           </div>
         ))}
       </div>
