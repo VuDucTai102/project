@@ -8,6 +8,7 @@ import ImageSearch from "./components/ImageSearch";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AdminProductManager from "./components/AdminProductManager";
 import "./index.css";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           {/* Trang chính */}
+           <Route path="/admin" element={<AdminProductManager />} />
           <Route
             path="/"
             element={

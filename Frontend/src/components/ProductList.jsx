@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ProductList.css";
 
 // Danh sách mặc định (hiện tại)
@@ -13,12 +13,47 @@ const defaultProducts = [
 ];
 
 function ProductList({ products = [] }) {
-  // Nếu không có kết quả từ props → dùng danh sách mặc định
-  const displayProducts = products.length > 0 ? products : defaultProducts;
+  // State cho tìm kiếm
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Nếu có kết quả tìm kiếm thì hiển thị, nếu không thì dùng mặc định
+  const displayProducts = searchResults.length > 0 ? searchResults : (products.length > 0 ? products : defaultProducts);
+
+  const handleSearch = async () => {
+    if (!search.trim()) return;
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(`http://localhost:5000/api/products/search?q=${encodeURIComponent(search)}`);
+      if (!res.ok) throw new Error("Không tìm thấy sản phẩm phù hợp");
+      const data = await res.json();
+      setSearchResults(data);
+    } catch (err) {
+      setError(err.message || "Lỗi khi tìm kiếm");
+      setSearchResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="product-section">
-      <h2>{products.length > 0 ? "Kết quả tìm kiếm" : "Sản phẩm nổi bật"}</h2>
+      <div style={{ marginBottom: 20 }}>
+        <input
+          type="text"
+          placeholder="Tìm kiếm sản phẩm..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{ padding: 8, width: 220, marginRight: 8 }}
+        />
+        <button onClick={handleSearch} style={{ padding: 8 }}>Tìm kiếm</button>
+      </div>
+      {loading && <div>Đang tìm kiếm...</div>}
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      <h2>{searchResults.length > 0 ? "Kết quả tìm kiếm" : "Sản phẩm nổi bật"}</h2>
       <div className="product-grid">
         {displayProducts.map((p, index) => (
           <div key={index} className="product-card">
