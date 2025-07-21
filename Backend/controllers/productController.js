@@ -29,3 +29,21 @@ exports.deleteProduct = async (req, res) => {
   await pool.query("DELETE FROM products WHERE id = $1", [id]);
   res.json({ message: "Đã xoá thành công" });
 };
+
+exports.searchProducts = async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ error: "Thiếu tham số tìm kiếm" });
+  }
+  try {
+    const result = await pool.query(
+      "SELECT * FROM products WHERE name ILIKE $1",
+      [`%${q}%`]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Lỗi server khi tìm kiếm sản phẩm" });
+  }
+};
+

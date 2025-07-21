@@ -6,8 +6,13 @@ import Header from "./components/Header";
 import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 import Modal from "react-modal";
-
 Modal.setAppElement("#root");
+import ImageSearch from "./components/ImageSearch"; 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import AdminProductManager from "./components/AdminProductManager";
+import "./index.css";
 
 function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
