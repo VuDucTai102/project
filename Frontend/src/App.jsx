@@ -4,7 +4,6 @@ import Navbar from "./components/Navbar";
 import Banner from "./components/Banner";
 import ProductList from "./components/ProductList";
 import Footer from "./components/Footer";
-import ImageSearch from "./components/ImageSearch"; 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -24,8 +23,23 @@ function App() {
           {/* Trang đăng ký */}
           <Route path="/register" element={<Register />} />
 
+          {/* Trang admin quản lý sản phẩm */}
+          <Route path="/admin" element={<AdminProductManager />} />
+
+          {/* Trang sản phẩm riêng (tùy chọn) */}
+          <Route
+            path="/products"
+            element={
+              <>
+                <Header />
+                <Navbar />
+                <ProductList products={products} />
+                <Footer />
+              </>
+            }
+          />
+
           {/* Trang chính */}
-           <Route path="/admin" element={<AdminProductManager />} />
           <Route
             path="/"
             element={
@@ -33,16 +47,7 @@ function App() {
                 <Header />
                 <Navbar />
                 <Banner />
-
-                {/* Tìm kiếm bằng hình ảnh */}
-                <div className="container" style={{ padding: "20px" }}>
-                  <h2 style={{ marginBottom: "10px" }}>
-                    Tìm kiếm sản phẩm bằng hình ảnh
-                  </h2>
-                  <ImageSearch onSearchResult={setProducts} />
-                  <ProductList products={products} />
-                </div>
-
+                <ProductList products={products} />
                 <Footer />
               </>
             }

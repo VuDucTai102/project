@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
   name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
-  role TEXT DEFAULT 'user' -- user | admin
+  role VARCHAR(20) NOT NULL DEFAULT 'user' -- user | admin
 );
 
 -- Dữ liệu mẫu
