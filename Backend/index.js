@@ -14,7 +14,9 @@ app.use(express.json());
 // Định tuyến
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
+
 //app.use("/api/image-search", imageSearchRoutes);
+
 
 // Khởi động
 app.listen(port, () => {

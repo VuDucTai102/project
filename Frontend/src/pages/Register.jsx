@@ -1,57 +1,77 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import "../styles/Auth.css";
+import axios from "axios";
+import "./Register.css";
 
 function Register() {
-  const { register, handleSubmit, reset } = useForm();
-  const navigate = useNavigate(); // ✅ Hook để chuyển trang
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        alert("✅ Đăng ký thành công!");
-        reset();
-
-        // ✅ Chuyển hướng sang trang đăng nhập sau 1s
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
-      } else {
-        alert(`❌ Lỗi: ${result.error || "Không xác định"}`);
-      }
-    } catch (error) {
-      console.error("Lỗi kết nối:", error);
-      alert("🚫 Lỗi kết nối đến server!");
+      const cleanForm = {
+        ...form,
+        email: form.email.trim().toLowerCase(),
+      };
+      console.log("Submitting registration form:", cleanForm);
+      const res = await axios.post("http://localhost:5000/api/auth/register", cleanForm);
+      console.log("res", res);
+      setSuccess("Đăng ký thành công! Đang chuyển sang trang đăng nhập...");
+      setTimeout(() => navigate("/login"), 1500);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Đăng ký thất bại. Email có thể đã tồn tại."
+      );
     }
   };
 
   return (
     <div className="auth-container">
-      <Header />
-      <h2>Đăng ký</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>Họ và tên</label>
-        <input {...register("name")} type="text" required />
-
-        <label>Email</label>
-        <input {...register("email")} type="email" required />
-
-        <label>Mật khẩu</label>
-        <input {...register("password")} type="password" required />
-
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Đăng ký</h2>
+        {error && <div style={{ color: "red", marginBottom: 10 }}>{error}</div>}
+        {success && (
+          <div style={{ color: "green", marginBottom: 10 }}>{success}</div>
+        )}
+        <input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Họ và tên"
+          required
+          autoFocus
+        />
+        <input
+          name="email"
+          type="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email"
+          required
+        />
+        <input
+          name="password"
+          type="password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder="Mật khẩu"
+          required
+        />
         <button type="submit">Đăng ký</button>
+        <div className="auth-link">
+          <span>Đã có tài khoản? </span>
+          <a href="/login">Đăng nhập</a>
+        </div>
       </form>
     </div>
   );

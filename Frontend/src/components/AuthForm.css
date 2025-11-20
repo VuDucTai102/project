@@ -1,0 +1,136 @@
+/* ===== HEADER CHÍNH ===== */
+.header-container {
+  background-color: #0b46a0;
+  color: white;
+  font-weight: 500;
+}
+
+/* Hàng đầu tiên */
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+}
+
+/* Logo + Hotline */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  height: 40px;
+}
+
+.hotline {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.hotline i {
+  color: red;
+  margin-right: 6px;
+}
+
+/* Thanh tìm kiếm ở giữa */
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  display: flex;
+  background: white;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  padding: 8px 14px;
+  width: 280px;
+}
+
+.search-bar button {
+  background: #0b46a0;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Auth bên phải */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-btn {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.auth-btn:hover {
+  text-decoration: underline;
+}
+
+.logout-btn {
+  background: none;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: center;
+  background: #083a88;
+  padding: 8px 0;
+}
+
+.menu-item {
+  position: relative;
+  margin: 0 15px;
+  cursor: pointer;
+}
+
+.menu-item span {
+  color: white;
+  font-weight: 500;
+}
+
+.menu-item .dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  color: #333;
+  display: none;
+  flex-direction: column;
+  min-width: 180px;
+  border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item:hover .dropdown {
+  display: flex;
+}
+
+.dropdown a {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown a:hover {
+  background: #f0f0f0;
+}

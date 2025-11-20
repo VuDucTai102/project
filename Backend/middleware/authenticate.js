@@ -11,7 +11,7 @@ function authenticate(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Gán user (gồm id, username, role) vào request
+    req.user = decoded; // Gán user (gồm id, name, role) vào request
     next();
   } catch (err) {
     return res.status(403).json({ message: 'Token không hợp lệ' });

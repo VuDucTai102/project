@@ -1,5 +1,5 @@
 import React from "react";
-import "./Footer.css"; // bật lại nếu bạn có file css riêng cho footer
+import "./Footer.css"; 
 
 function Footer() {
   return (
@@ -21,9 +21,9 @@ function Footer() {
         <div className="footer-section">
           <h4>Kết nối với chúng tôi</h4>
           <p>
-            🌐 <a href="https://facebook.com" target="_blank">Facebook</a><br />
-            🐦 <a href="https://twitter.com" target="_blank">Twitter</a><br />
-            📸 <a href="https://instagram.com" target="_blank">Instagram</a>
+             <a href="https://facebook.com" target="_blank">Facebook</a><br />
+             <a href="https://twitter.com" target="_blank">Twitter</a><br />
+             <a href="https://instagram.com" target="_blank">Instagram</a>
           </p>
         </div>
       </div>
