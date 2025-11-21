@@ -1,4 +1,4 @@
-// ModalProductDetail.tsx
+
 import React from "react";
 import "./ModalProductDetail.css";
 
@@ -23,7 +23,7 @@ const ModalProductDetail: React.FC<Props> = ({ isOpen, onClose, product, onBuy, 
 
         <div className="dialog-actions">
           <button onClick={onBuy}>Mua ngay</button>
-          <button onClick={() => onAddToCart(product)}>Thêm vào giỏ</button>
+          <button onClick={() => onAddToCart(product)}>Thêm vào giỏ hàng</button>
         </div>
       </div>
     </div>
